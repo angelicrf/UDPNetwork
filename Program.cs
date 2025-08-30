@@ -15,7 +15,6 @@ namespace UDPNetwork
    
         static void Main(string[] args)
         {
-            //Class1.StartMethode();
             Class1.PingMethod();
             Class1.CalculateLatency();
         }
