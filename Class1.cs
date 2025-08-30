@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net.NetworkInformation;
 
 namespace UDPNetwork
 {
-	public class Class1
-	{
+    public class Class1
+    {
         public static void StartMethod()
         {
             Console.WriteLine("My Class One");
@@ -23,36 +20,43 @@ namespace UDPNetwork
                 Console.WriteLine(i);
             }
         }
-        public static void PingMethod(string googleIp = "8.8.8.8", int timeToIterate = 6, int timeOut = 3000) { 
-           
+        public static void PingMethod(string googleIp = "8.8.8.8", int timeToIterate = 6, int timeOut = 3000)
+        {
 
-                using(Ping thisPing = new Ping())
+
+            using (Ping thisPing = new Ping())
+            {
+                double countLatency = 0;
+                int sucess = 0;
+
+                Console.WriteLine($"Start to Ping {timeToIterate}");
+                for (int i = 0; i < timeToIterate; i++)
                 {
-                    int countLatency = 0;
-                    int sucess = 0; 
-
-                    Console.WriteLine($"Start to Ping {timeToIterate}");
-                    for (int i = 0; i < timeToIterate; i++)
+                    try
                     {
-                        try
+                        PingReply pingReply = thisPing.Send(googleIp, timeOut);
+                        if (pingReply.Status == IPStatus.Success)
                         {
-                            PingReply pingReply = thisPing.Send(googleIp, timeToIterate);
-                            if (pingReply.Status == IPStatus.Success)
-                            {
-                                sucess++;
-                                countLatency += (int)pingReply.RoundtripTime;
-                            }
-
+                            sucess++;
+                            countLatency += pingReply.RoundtripTime;
+                            Console.WriteLine($"{pingReply.RoundtripTime}");
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Console.WriteLine(e);
-
-                            throw;
+                            Console.WriteLine($"Packet {i + 1}: Failed, Status: {pingReply.RoundtripTime}");
                         }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+
+                        throw;
+                    }
                 }
                 double packetLossPercentage = ((timeToIterate - sucess) / (double)timeToIterate) * 100;
                 double averageLatency = sucess > 0 ? countLatency / sucess : 0;
+
                 string summary = $"\nNetwork Diagnosis Summary for {googleIp}:\n" +
                      $"Packets Sent: {timeToIterate}\n" +
                      $"Packets Received: {sucess}\n" +
@@ -65,9 +69,9 @@ namespace UDPNetwork
         }
         public static void CalculateLatency()
         {
-            string targetHost = "8.8.8.8"; 
-            int targetPort = 3074; 
-            int packetsToSend = 5; 
+            string targetHost = "8.8.8.8";
+            int targetPort = 3074;
+            int packetsToSend = 5;
             int timeoutMs = 3000;
 
             using (UdpClient udpClient = new UdpClient())
@@ -82,7 +86,7 @@ namespace UDPNetwork
                 {
                     try
                     {
-                     
+
                         string message = $"TestPacket_{i}_{DateTime.UtcNow.Ticks}";
                         byte[] sendData = Encoding.ASCII.GetBytes(message);
                         Stopwatch stopwatch = Stopwatch.StartNew();
@@ -121,6 +125,6 @@ namespace UDPNetwork
             Console.ReadKey();
         }
     }
-       
-	
+
+
 }
