@@ -15,8 +15,8 @@ namespace UDPNetwork
    
         static void Main(string[] args)
         {
-            Class1.PingMethod();
-            Class1.CalculateLatency();
+            Class1.PingMethod("8.8.8.8", 4, 3200);
+            //Class1.CalculateLatency();
         }
     }
 }

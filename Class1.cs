@@ -23,10 +23,8 @@ namespace UDPNetwork
                 Console.WriteLine(i);
             }
         }
-        public static void PingMethod() { 
-                string googleIp = "8.8.8.8";
-                int timeToIterate = 6;
-                int timeOut = 3000;
+        public static void PingMethod(string googleIp = "8.8.8.8", int timeToIterate = 6, int timeOut = 3000) { 
+           
 
                 using(Ping thisPing = new Ping())
                 {
@@ -43,9 +41,7 @@ namespace UDPNetwork
                             {
                                 sucess++;
                                 countLatency += (int)pingReply.RoundtripTime;
-
                             }
-
 
                         }
                         catch (Exception e)
@@ -54,22 +50,24 @@ namespace UDPNetwork
 
                             throw;
                         }
-                    double packetLossPercentage = ((timeToIterate - sucess) / (double)timeToIterate) * 100;
-                    double averageLatency = sucess > 0 ? countLatency / sucess : 0;
-
-                    Console.WriteLine("\nTest Summary:");
-                    Console.WriteLine($"Packets Sent: {timeToIterate}");
-                    Console.WriteLine($"Packets Received: {sucess}");
-                    Console.WriteLine($"Packet Loss: {packetLossPercentage:F2}%");
-                    Console.WriteLine($"Average Latency: {averageLatency:F2} ms");
                 }
-                }
+                double packetLossPercentage = ((timeToIterate - sucess) / (double)timeToIterate) * 100;
+                double averageLatency = sucess > 0 ? countLatency / sucess : 0;
+                string summary = $"\nNetwork Diagnosis Summary for {googleIp}:\n" +
+                     $"Packets Sent: {timeToIterate}\n" +
+                     $"Packets Received: {sucess}\n" +
+                     $"Packet Loss: {packetLossPercentage:F2}%\n" +
+                     $"Average Latency: {averageLatency:F2} ms\n" +
+                     $"Diagnosis: {(averageLatency > 60 ? "High latency detected. May impact gaming or real-time applications." : "Latency within acceptable range for most applications.")}\n" +
+                     $"{(packetLossPercentage > 10 ? "Significant packet loss detected. Possible network issue." : "Packet loss within acceptable limits.")}";
+                Console.WriteLine(summary);
+            }
         }
         public static void CalculateLatency()
         {
             string targetHost = "8.8.8.8"; 
             int targetPort = 3074; 
-            int packetsToSend = 10; 
+            int packetsToSend = 5; 
             int timeoutMs = 3000;
 
             using (UdpClient udpClient = new UdpClient())
