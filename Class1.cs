@@ -7,8 +7,55 @@ using System.Text;
 
 namespace UDPNetwork
 {
-    public class Class1
+    public class Class1 : Interface1
     {
+        public double Time_latenncy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string This_port { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public double ClaculateLatency(int latency)
+        {
+            return Math.PI * Time_latenncy * Time_latenncy;
+        }
+
+        public double GetLatency()
+        {
+            try
+            {
+                if (Time_latenncy > 1.1)
+                {
+                    Console.WriteLine("Valid");
+                    return Time_latenncy                }
+                else
+                {
+                    Console.WriteLine("InValid");
+                    return 0.0;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public string SetPort(string port)
+        {
+            return This_port = port;
+        }
+
+        public string GetPort()
+        {
+            try
+            {
+                return string.IsNullOrEmpty(This_port) ? "8.8.8.8" : This_port;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
         public static void StartMethod()
         {
             Console.WriteLine("My Class One");
@@ -124,6 +171,8 @@ namespace UDPNetwork
             Console.WriteLine("Test completed. Press any key to exit.");
             Console.ReadKey();
         }
+
+
     }
 
 
