@@ -10,7 +10,8 @@ namespace UDPNetwork
     public class Class1 : Interface1
     {
         public double Time_latenncy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string This_port { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int This_port { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string IpAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public double ClaculateLatency(int latency)
         {
@@ -39,16 +40,16 @@ namespace UDPNetwork
             }
         }
 
-        public string SetPort(string port)
+        public void SetPort(int port)
         {
-            return This_port = port;
+            This_port = port;
         }
 
-        public string GetPort()
+        public int GetPort()
         {
             try
             {
-                return string.IsNullOrEmpty(This_port) ? "8.8.8.8" : This_port;
+                return This_port > 0 ? This_port : 0;
             }
             catch (Exception e)
             {
@@ -56,6 +57,20 @@ namespace UDPNetwork
                 throw;
             }
         }
+        public string GetIPAddress()
+        {
+            if (!string.IsNullOrWhiteSpace(IpAddress))
+            {
+                return "8.8.8.8";
+            }
+            else return IpAddress;
+        }
+
+        public void SetIPAddress(string ipaddress)
+        {
+            IpAddress = ipaddress;
+        }
+
         public static void StartMethod()
         {
             Console.WriteLine("My Class One");
@@ -67,6 +82,7 @@ namespace UDPNetwork
                 Console.WriteLine(i);
             }
         }
+
         public static void PingMethod(string googleIp = "8.8.8.8", int timeToIterate = 6, int timeOut = 3000)
         {
 

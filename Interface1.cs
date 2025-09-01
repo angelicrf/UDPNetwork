@@ -3,10 +3,13 @@
     internal interface Interface1
     {
         double Time_latenncy { get; set; }
-        string This_port { get; set; }
+        int This_port { get; set; }
+        string IpAddress { get; set; }
         double ClaculateLatency(int latency);
         double GetLatency();
-        string SetPort(string port);
-        string GetPort();
+        void SetPort(int port);
+        int GetPort();
+        string GetIPAddress();
+        void SetIPAddress(string ipaddress);
     }
 }
