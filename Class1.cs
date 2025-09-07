@@ -9,83 +9,63 @@ namespace UDPNetwork
 {
     public class Class1 : Interface1
     {
-        public double Time_latenncy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int This_port { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string IpAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private string _ipAddress = "8.8.8.8";
+        private int _port = 90;
+        private double _timeLatency = 0.0;
+        public double Time_latenncy
+        {
+            get => _timeLatency;
+            set
+            {
+                if (_timeLatency == value)
+                {
+                    _timeLatency = value;
+                }
+
+                throw new InvalidOperationException(nameof(value));
+            }
+
+        }
+
+        public int This_port
+        {
+            get => _port;
+            set
+            {
+                if (value < 0)
+                {
+                    _port = value;
+                }
+                throw new InvalidOperationException(nameof(value));
+            }
+        }
+        public string IpAddress
+        {
+            get => _ipAddress;
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+                else
+                    _ipAddress = value;
+            }
+        }
 
         public double ClaculateLatency(int latency)
         {
             return Math.PI * Time_latenncy * Time_latenncy;
         }
 
-        public double GetLatency()
-        {
-            try
-            {
-                if (Time_latenncy > 1.1)
-                {
-                    Console.WriteLine("Valid");
-                    return Time_latenncy                }
-                else
-                {
-                    Console.WriteLine("InValid");
-                    return 0.0;
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public void SetPort(int port)
-        {
-            This_port = port;
-        }
-
-        public int GetPort()
-        {
-            try
-            {
-                return This_port > 0 ? This_port : 0;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-        public string GetIPAddress()
-        {
-            if (!string.IsNullOrWhiteSpace(IpAddress))
-            {
-                return "8.8.8.8";
-            }
-            else return IpAddress;
-        }
-
-        public void SetIPAddress(string ipaddress)
-        {
-            IpAddress = ipaddress;
-        }
-
-        public static void StartMethod()
-        {
-            Console.WriteLine("My Class One");
-            int target_value = 0;
-            int invremented_latency = 0;
-
-            for (int i = 0; i < 5; i++)
-            {
-                Console.WriteLine(i);
-            }
-        }
 
         public static void PingMethod(string googleIp = "8.8.8.8", int timeToIterate = 6, int timeOut = 3000)
         {
-
+            if (string.IsNullOrEmpty(googleIp))
+            {
+                throw new ArgumentException($"'{nameof(googleIp)}' cannot be null or empty.", nameof(googleIp));
+            }
 
             using (Ping thisPing = new Ping())
             {
